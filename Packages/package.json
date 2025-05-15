@@ -1,8 +1,9 @@
 {
-    "name": "Trie",
+    "name": "com.ds1ngt.trie",
     "version": "1.0.0",
     "displayName": "Trie",
     "author": {
         "name": "Juhwan Kim"
-    }
+    },
+    "documentationUrl": "https://github.com/ds1ngt/Trie-public"
 }
