@@ -1,7 +1,8 @@
 {
     "name": "com.ds1ngt.trie",
-    "version": "1.0.0",
     "displayName": "Trie",
+    "version": "1.0.0",
+    "description": "간단한 Trie 자료구조를 구현한 패키지입니다. 이 패키지는 문자열 검색 및 자동 완성 기능을 제공하는 데 사용됩니다.",
     "author": {
         "name": "Juhwan Kim"
     },
