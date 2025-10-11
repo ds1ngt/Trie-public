@@ -53,7 +53,7 @@ namespace NGT.Trie
 			_items = null;
 		}
 
-		protected virtual void Clear()
+		public virtual void Clear()
 		{
 			_children?.Clear();
 			_items?.Clear();
