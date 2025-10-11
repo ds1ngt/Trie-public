@@ -1,8 +1,8 @@
 # 검색 (Trie)
 - [검색 (Trie)](#검색-trie)
   - [개요](#개요)
+  - [설치](#설치)
   - [기능](#기능)
-  - [API](#api)
     - [Trie](#trie)
     - [Trie.TrieSettings](#trietriesettings)
   - [사용 예시](#사용-예시)
@@ -11,6 +11,11 @@
 ## 개요
 Trie기반 문자열 검색 도구  
 입력된 내용은 Trie 구조로 배치되고, 탐색에 사용됩니다.
+## 설치
+Unity Package Manager에서 아래의 Git 주소로 설치합니다.
+```
+https://github.com/ds1ngt/Trie-public.git?path=/Packages
+```
 ## 기능
 - 일반 검색  
 이름 기반의 검색을 합니다.
@@ -20,7 +25,6 @@ Trie기반 문자열 검색 도구
 검색 대상의 일부분에 대한 검색을 지원합니다.
 - 검색 결과로 객체 저장  
 각 검색 결과에 임의의 객체를 지정하고 탐색된 결과로부터 사용할 수 있습니다.
-
 ### Trie
 API | 설명
 --- | ---
@@ -44,10 +48,17 @@ var trie = Trie<string>.CreateNew(Trie<string>.TrieSettings.Default);
 // 검색 대상 추가
 var items = new string[] {"홍길동", "김철수"};
 foreach (var item in items)
- trie.Insert(new Trie<string>.Pair { Key = item, value = item} );
+{
+    trie.Insert(new Trie<string>.Pair { Key = item, Value = item });
+    Debug.Log($"Insert Item: {item}");
+}
 
 // 검색
-var result = trie.FindAll("ㅎㄱㄷ");    // result = List<string> {"홍길동"};
+var search = "ㅎㄱㄷ";
+var result = trie.FindAll(search);    // result = List<string> {"홍길동"};
+Debug.Log($"Search {search}. Result: {result.Count}");
+foreach (var item in result)
+    Debug.Log($"-- {item}");
 ```
 
 ## 제약 사항
