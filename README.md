@@ -3,7 +3,6 @@
   - [개요](#개요)
   - [설치](#설치)
   - [기능](#기능)
-  - [API](#api)
     - [Trie](#trie)
     - [Trie.TrieSettings](#trietriesettings)
   - [사용 예시](#사용-예시)
@@ -49,10 +48,17 @@ var trie = Trie<string>.CreateNew(Trie<string>.TrieSettings.Default);
 // 검색 대상 추가
 var items = new string[] {"홍길동", "김철수"};
 foreach (var item in items)
- trie.Insert(new Trie<string>.Pair { Key = item, value = item} );
+{
+    trie.Insert(new Trie<string>.Pair { Key = item, Value = item });
+    Debug.Log($"Insert Item: {item}");
+}
 
 // 검색
-var result = trie.FindAll("ㅎㄱㄷ");    // result = List<string> {"홍길동"};
+var search = "ㅎㄱㄷ";
+var result = trie.FindAll(search);    // result = List<string> {"홍길동"};
+Debug.Log($"Search {search}. Result: {result.Count}");
+foreach (var item in result)
+    Debug.Log($"-- {item}");
 ```
 
 ## 제약 사항
