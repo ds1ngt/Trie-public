@@ -223,7 +223,7 @@ namespace NGT.Trie
 			base.Dispose();
 		}
 
-		protected override void Clear()
+		public override void Clear()
 		{
 			_searchResult?.Clear();
 			base.Clear();
