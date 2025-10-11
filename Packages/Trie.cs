@@ -1,40 +1,40 @@
 using System;
 using System.Collections.Generic;
 
-namespace Trie
+namespace NGT.Trie
 {
-	#region Node
+#region Node
 	public class Node<T> : IDisposable
 	{
-		#region Variables
+#region Variables
 		private Dictionary<char, List<Node<T>>> _children = new();
 		private List<T> _items = new();
 		private int _idx;
-		#endregion // Variables
+#endregion // Variables
 
-		#region Properties
+#region Properties
 		public IReadOnlyDictionary<char, List<Node<T>>> Children => _children;
 		public IReadOnlyList<T> Items => _items;
 		public int Index => _idx;
-		#endregion // Properties
+#endregion // Properties
 
-		#region Initialization
+#region Initialization
 		public Node(int index) => _idx = index;
-		#endregion // Initialization
+#endregion // Initialization
 
-		#region Indexer
+#region Indexer
 		public List<Node<T>> this[char c]
 		{
 			get => _children.ContainsKey(c) ? _children[c] : null;
 			set => _children[c] = value;
 		}
-		#endregion // Indexer
+#endregion // Indexer
 
-		#region Public Methods
+#region Public Methods
 		public void AddItem(T item) => _items.Add(item);
-		#endregion // Public Methods
+#endregion // Public Methods
 
-		#region Dispose
+#region Dispose
 		public virtual void Dispose()
 		{
 			if (_children != null)
@@ -53,30 +53,30 @@ namespace Trie
 			_items = null;
 		}
 
-		public virtual void Clear()
+		protected virtual void Clear()
 		{
 			_children?.Clear();
 			_items?.Clear();
 		}
-		#endregion // Dispose
+#endregion // Dispose
 	}
-	#endregion // Node
+#endregion // Node
 
-	#region Trie
+#region Trie
 	public sealed class Trie<T> : Node<T>
 	{
-		#region Variables
+#region Variables
 		private List<T> _searchResult;
 		private Trie<T> _root;
 		private int _currentIdx;
 		private TrieSettings _settings;
-		#endregion // Variables
+#endregion // Variables
 
-		#region Debug
+#region Debug
 		public int TotalCount => _currentIdx;
-		#endregion // Debug
+#endregion // Debug
 
-		#region Settings
+#region Settings
 		public struct TrieSettings
 		{
 			// 부분 검색
@@ -91,9 +91,9 @@ namespace Trie
 				UseConsonantSearch = true,
 			};
 		}
-		#endregion // Settings
+#endregion // Settings
 
-		#region Create & Initialize
+#region Create & Initialize
 		public static Trie<T> CreateNew(TrieSettings settings, params Pair[] pairs) => new(settings, pairs);
 		private Trie(TrieSettings settings, params Pair[] pairs) : base(0)
 		{
@@ -144,9 +144,9 @@ namespace Trie
 				node.AddItem(value);
 			}
 		}
-		#endregion // Create & Initialize
+#endregion // Create & Initialize
 
-		#region Search
+#region Search
 		public List<T> FindAll(string key)
 		{
 			_searchResult.Clear();
@@ -212,9 +212,9 @@ namespace Trie
 
 			return result;
 		}
-		#endregion // Search
+#endregion // Search
 
-		#region Dispose / Clear
+#region Dispose / Clear
 		public override void Dispose()
 		{
 			_root = null;
@@ -223,29 +223,29 @@ namespace Trie
 			base.Dispose();
 		}
 
-		public override void Clear()
+		protected override void Clear()
 		{
 			_searchResult?.Clear();
 			base.Clear();
 		}
-		#endregion // Dispose / Clear
+#endregion // Dispose / Clear
 
-		#region Util
+#region Util
 		private string ToValidKey(string key)
 		{
 			key = key.Replace(" ", string.Empty);
 			key = key.ToLower();
 			return key;
 		}
-		#endregion // Util
+#endregion // Util
 
-		#region Data
+#region Data
 		public struct Pair
 		{
 			public string Key;
 			public T Value;
 		}
-		#endregion // Data
+#endregion // Data
 	}
-	#endregion // Trie
+#endregion // Trie
 }

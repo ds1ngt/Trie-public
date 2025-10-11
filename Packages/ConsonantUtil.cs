@@ -1,23 +1,23 @@
 using System.Linq;
 using System.Text;
 
-namespace Trie
+namespace NGT.Trie
 {
 	public abstract class ConsonantUtil
 	{
-		private static readonly (int, int)[] _numberRange = new[]
+		private static readonly (int, int)[] NumberRange = new[]
 		{
 			// 0 ~ 9
 			(0x30, 0x39),
 		};
-		private static readonly (int, int)[] _engRange = new[]
+		private static readonly (int, int)[] EngRange = new[]
 		{
 			// a z
 			(0x61, 0x7A),
 			// A Z
 			(0x41, 0x5A),
 		};
-		private static readonly (int, char)[] _korMap = new[]
+		private static readonly (int, char)[] KorMap = new[]
 		{
 			// 가 까 나 다 따
 			(0xAC00, 'ㄱ'), (0xAE4C, 'ㄲ'), (0xB098, 'ㄴ'), (0xB2E4, 'ㄷ'), (0xB530, 'ㄸ'),
@@ -29,13 +29,13 @@ namespace Trie
 			(0xCE74, 'ㅋ'), (0xD0C0, 'ㅌ'), (0xD30C, 'ㅍ'), (0xD558, 'ㅎ'), (0xD7A4, 'ㅎ'),
 		};
 
-		private static readonly int[] _specialChars = new[]
+		private static readonly int[] SpecialChars = new[]
 		{
 			0x2A, // *
 		};
 
-		private static readonly StringBuilder _sb = new();
-		private static readonly char _invalidConsonant = '_';
+		private static readonly StringBuilder Sb = new();
+		private static readonly char InvalidConsonant = '_';
 
 		/// <summary>
 		/// 초성 변환 (한글이 있으면 초성으로 변환, 그 외의 문자는 그대로 반환)
@@ -57,10 +57,10 @@ namespace Trie
 
 		private static string ConvertToConsonant(int[] unicodes)
 		{
-			_sb.Clear();
+			Sb.Clear();
 			foreach (var unicode in unicodes)
-				_sb.Append(GetConsonant(unicode));
-			return _sb.ToString();
+				Sb.Append(GetConsonant(unicode));
+			return Sb.ToString();
 		}
 
 		/// <summary>
@@ -78,17 +78,17 @@ namespace Trie
 		{
 			result = string.Empty;
 
-			_sb.Clear();
+			Sb.Clear();
 			foreach (var unicode in unicodes)
 			{
 				var consonant = GetConsonant(unicode);
-				if (consonant == _invalidConsonant)
+				if (consonant == InvalidConsonant)
 					return false;
 
-				_sb.Append(consonant);
+				Sb.Append(consonant);
 			}
 
-			result = _sb.ToString();
+			result = Sb.ToString();
 			return true;
 		}
 		private static char GetConsonant(int unicode)
@@ -101,26 +101,26 @@ namespace Trie
 				return GetConsonantKor(unicode);
 			if (IsSpecialChar(unicode))
 				return char.ConvertFromUtf32(unicode)[0];
-			return _invalidConsonant;
+			return InvalidConsonant;
 		}
 
-		private static bool IsNumber(int unicode) => unicode >= _numberRange[0].Item1 && unicode <= _numberRange[0].Item2;
+		private static bool IsNumber(int unicode) => unicode >= NumberRange[0].Item1 && unicode <= NumberRange[0].Item2;
 		private static bool IsEnglish(int unicode)
 		{
-			foreach (var range in _engRange)
+			foreach (var range in EngRange)
 				if (unicode >= range.Item1 && unicode <= range.Item2)
 					return true;
 			return false;
 		}
-		private static bool IsKorean(int unicode) => unicode >= _korMap[0].Item1 &&
-													 unicode <= _korMap[^1].Item1;
+		private static bool IsKorean(int unicode) => unicode >= KorMap[0].Item1 &&
+													 unicode <= KorMap[^1].Item1;
 
-		private static bool IsSpecialChar(int unicode) => _specialChars.Contains(unicode);
+		private static bool IsSpecialChar(int unicode) => SpecialChars.Contains(unicode);
 		private static char GetConsonantKor(int unicode)
 		{
-			for (int i = 1; i < _korMap.Length; ++i)
-				if (_korMap[i - 1].Item1 <= unicode && unicode < _korMap[i].Item1)
-					return _korMap[i - 1].Item2;
+			for (int i = 1; i < KorMap.Length; ++i)
+				if (KorMap[i - 1].Item1 <= unicode && unicode < KorMap[i].Item1)
+					return KorMap[i - 1].Item2;
 
 			return '-';
 		}
